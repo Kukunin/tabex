@@ -52,4 +52,16 @@ describe('Client destroy', function () {
       done();
     });
   });
+
+  it('does not pretends on master after destroy', function(done) {
+    [ wnd2, wnd1 ].forEach(function(wnd) {
+      wnd.live.destroy();
+      wnd.isMaster = false;
+    });
+    setTimeout(function() {
+      assert.strictEqual(false, wnd1.isMaster);
+      assert.strictEqual(false, wnd2.isMaster);
+      done();
+    }, 1000);
+  });
 });
