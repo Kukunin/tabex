@@ -176,6 +176,10 @@ Client.prototype.filterOut = function (fn) {
   return this;
 };
 
+Client.prototype.destroy = function () {
+  this.__router__.destroy();
+};
+
 
 // Receive message from router
 //
