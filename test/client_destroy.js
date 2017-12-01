@@ -38,9 +38,18 @@ describe('Client destroy', function () {
     wnd2.close();
   });
 
-  it('.makes first window a master', function (done) {
+  it('makes first window a master', function (done) {
     assert.strictEqual(true, wnd1.isMaster);
     assert.strictEqual(false, wnd2.isMaster);
     done();
+  });
+
+  it('releases the masterness after destroy()', function(done) {
+    wnd1.live.destroy();
+    wait(function() { return wnd2.isMaster; }, function() {
+      assert.strictEqual(false, wnd1.isMaster);
+      assert.strictEqual(true, wnd2.isMaster);
+      done();
+    });
   });
 });

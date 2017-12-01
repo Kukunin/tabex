@@ -427,10 +427,10 @@ function Router(options) {
   //
   this.__destroyed__ = false;
   $$.addEvent(window, 'beforeunload', function () {
-    self.__destroy__();
+    self.destroy();
   });
   $$.addEvent(window, 'unload', function () {
-    self.__destroy__();
+    self.destroy();
   });
 
   // Update current tab info and check master alive
@@ -687,7 +687,7 @@ Router.prototype.__on_changed__ = function (e) {
 
 // Page unload handler. Remove tab data from store
 //
-Router.prototype.__destroy__ = function () {
+Router.prototype.destroy = function () {
   if (this.__destroyed__) {
     return;
   }
