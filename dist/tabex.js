@@ -176,10 +176,6 @@ Client.prototype.filterOut = function (fn) {
   return this;
 };
 
-Client.prototype.destroy = function () {
-  this.__router__.destroy();
-};
-
 
 // Receive message from router
 //
@@ -431,10 +427,10 @@ function Router(options) {
   //
   this.__destroyed__ = false;
   $$.addEvent(window, 'beforeunload', function () {
-    self.destroy();
+    self.__destroy__();
   });
   $$.addEvent(window, 'unload', function () {
-    self.destroy();
+    self.__destroy__();
   });
 
   // Update current tab info and check master alive
@@ -691,7 +687,7 @@ Router.prototype.__on_changed__ = function (e) {
 
 // Page unload handler. Remove tab data from store
 //
-Router.prototype.destroy = function () {
+Router.prototype.__destroy__ = function () {
   if (this.__destroyed__) {
     return;
   }
