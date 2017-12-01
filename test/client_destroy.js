@@ -13,27 +13,19 @@ describe('Client destroy', function () {
   }
 
   function initWindows(done) {
-    function trackMasterness(wnd) {
-      wnd.live.on('!sys.master', function (data) {
-        wnd.masterEvent = true;
-        wnd.isMaster = data.node_id === data.master_id;
-      });
-    }
-
-    wnd1 = window.open('fixtures/client_local.html', 'client_local_wnd1');
+    wnd1 = window.open('fixtures/client_local_master.html', 'client_local_wnd1');
     wait(function() { return wnd1.live; }, function() {
-      trackMasterness(wnd1);
-      wnd2 = window.open('fixtures/client_local.html', 'client_local_wnd2');
+      wnd2 = window.open('fixtures/client_local_master.html', 'client_local_wnd2');
       wait(function() { return wnd2.live; }, function() {
-        trackMasterness(wnd2);
         wait(function() { return wnd1.masterEvent && wnd2.masterEvent; }, done);
       });
     });
   }
 
-  before(initWindows);
+  beforeEach(initWindows);
 
-  after(function () {
+  /* eslint-disable no-undef, block-scoped-var */
+  afterEach(function () {
     wnd1.close();
     wnd2.close();
   });
@@ -63,5 +55,14 @@ describe('Client destroy', function () {
       assert.strictEqual(false, wnd2.isMaster);
       done();
     }, 1000);
+  });
+
+  it('can be re-created after destroy', function(done) {
+    wnd1.live.destroy();
+    wait(function() { return wnd2.isMaster; }, function() {
+      wnd1.setTabex();
+      wait(function() { return wnd1.isMaster; }, done);
+      wnd2.live.destroy();
+    });
   });
 });
