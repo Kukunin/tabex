@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf=8">
+  <script src="../../dist/tabex.js"></script>
+  <script>
+   function setTabex() {
+       window.masterEvent = false;
+       window.live = tabex.client({
+         iframe: 'http://127.0.0.1:9122/test/fixtures/proxy_iframe.html',
+         namespace: 'client_iframe_'
+       });
+       window.live.on('!sys.master', function (data) {
+           window.masterEvent = true;
+           window.isMaster = data.node_id === data.master_id;
+       });
+   };
+   setTabex();
+  </script>
+</head>
+<body>
+</body>
+</html>
